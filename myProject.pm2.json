@@ -1,0 +1,12 @@
+[
+    {
+        "name":"koa1",
+        "script":"./app.js",
+        "error_file":"./logs/api.log",
+        "env":{
+            "NODE_ENV":"local",
+            "domain": "local",
+            "maintenance": "false"
+        }
+    }
+]

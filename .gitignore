@@ -1,0 +1,5 @@
+node_modules
+.vscode
+logs/api.log
+static/uploadFiles/album/*
+# /public/upload/*

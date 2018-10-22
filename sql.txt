@@ -1,0 +1,13 @@
+mysql 查询语句
+1. select 
+    简单查询
+    * 代表该项所有信息，如果 写具体的id,name ，逗号隔开就是指定的字段返回
+    SELECT * FROM table
+    分页查询
+    SELECT * FROM table limit (pageNum-1)*pageSize,pageSize
+    条件查询
+    SELECT * FROM table WHERE level = 12 limit (pageNum-1)*pageSize,pageSize
+    SELECT * FROM table WHERE level = 12
+
+    -----------------
+    判断成功的标志除了 条件查询外，像删除，增加，更新 返回的一个字段affectedRows 如果为0 代表虽然通了，但数据库没有对应数据去操作，如果为1 ，代表数据库操作成功了；

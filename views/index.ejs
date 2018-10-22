@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <div id="post0">微信授权=》信息/</div>
+    <div id="post1">点击get 请求 /</div>
+    <div id="post2">点击post 请求/apiKoa/postForm </div>
+    <div id="post3">点击post 请求/apiKoa/upload  OSS</div>
+    <div id="post33">点击post 请求/apiKoa/upload  本地上传</div>
+    
+    <div id="post5">路径换流</div>
+    <div class="post6"><a download="test.png" href="/apiKoa/getImgUrl?url=http://parentschool.oss-cn-beijing.aliyuncs.com/AA/e5740e0112e369472fd69f8dfb2745bb.png">a标签下载流，需要download属性</a></div>
+    <img src="" id="img-post33" alt="">
+    <!-- <form id="form" method="POST" action="/apiKoa/upload" enctype="multipart/form-data">
+        <p>file upload</p>
+        <span>picName:</span><input name="picName" type="text" /><br/>
+        <input name="file" type="file" /><br/><br/>
+        <button type="submit">submit</button>
+    </form> -->
+
+
+
+    <hr>
+    <hr>
+    <div id="post4">条件查询+分页查询---点击post 请求/apiKoa/checkHeaders 检测headers </div>
+    <div id="post7">新增数据---insert</div>
+    <div id="post8">更新数据---update</div>
+    <div id="post9">删除数据---delete</div>
+    <script>
+        //设备检测  
+        function detectmob() {
+            if (navigator.userAgent.match(/Android/i) ||
+                navigator.userAgent.match(/webOS/i) ||
+                navigator.userAgent.match(/iPhone/i) ||
+                navigator.userAgent.match(/iPad/i) ||
+                navigator.userAgent.match(/iPod/i) ||
+                navigator.userAgent.match(/BlackBerry/i) ||
+                navigator.userAgent.match(/Windows Phone/i)
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        console.log(detectmob(), window)
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script>
+
+        /**
+         * 将 base64 转换位 blob 对象
+         * blob 存储 2进制对象的容器
+         * @export
+         * @param {*} base64
+         * @returns
+         */
+        function convertBase64UrlToBlob(base64) {
+            var parts = base64.dataURL.split(';base64,');
+            var contentType = parts[0].split(':')[1];
+            var raw = window.atob(parts[1]);
+            var rawLength = raw.length;
+            var uInt8Array = new Uint8Array(rawLength);
+            for (var i = 0; i < rawLength; i++) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+            return new Blob([uInt8Array], {
+                type: contentType
+            });
+        }
+
+        /**
+         * 将图片地址转换为 base64 格式
+         *
+         * @param {*} url
+         */
+        function convertUrlToBase64(url) {
+            return new Promise(function (resolve, reject) {
+                var img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.src = url;
+                img.onload = function () {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    var ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase();
+                    var dataURL = canvas.toDataURL('image/' + ext);
+                    var base64 = {
+                        dataURL: dataURL,
+                        type: 'image/' + ext,
+                        ext: ext
+                    };
+                    resolve(base64);
+                };
+            });
+        }
+
+        // 判断浏览器类型 
+        function myBrowser() {
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+            if (userAgent.indexOf("OPR") > -1) {
+                return "Opera";
+            }; //判断是否Opera浏览器 OPR/43.0.2442.991
+            if (userAgent.indexOf("Firefox") > -1) {
+                return "FF";
+            } //判断是否Firefox浏览器  Firefox/51.0
+            if (userAgent.indexOf("Trident") > -1) {
+                return "IE";
+            } //判断是否IE浏览器  Trident/7.0; rv:11.0
+            if (userAgent.indexOf("Edge") > -1) {
+                return "Edge";
+            } //判断是否Edge浏览器  Edge/14.14393
+            if (userAgent.indexOf("Chrome") > -1) {
+                return "Chrome";
+            } // Chrome/56.0.2924.87
+            if (userAgent.indexOf("Safari") > -1) {
+                return "Safari";
+            } //判断是否Safari浏览器 AppleWebKit/534.57.2 Version/5.1.7 Safari/534.57.2
+        }
+
+        // 判断文件是否为图片类型
+        function isImage(ext) {
+            if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' || ext == 'gif' || ext == 'bmp') {
+                return true;
+            }
+        }
+
+        var v = '/apiKoa/';
+        var url = '';
+        var appid = "wx3465005cc54652b4";
+        var redirect_uri = window.location.href;
+        $('#post0').on('click', function () {
+            console.log(0)
+            axios.post(v + 'getWXuserInfo', {
+                    //请求参数  
+                    token: 12,
+                    url: encodeURIComponent(window.location.href)
+
+                },
+                {
+                dataType : 'json',
+                contentType : 'application/json;charset=UTF-8'
+                })
+                .then(res => {
+                    console.log('resWX:', res)
+                })
+                .catch(err => {
+                    console.log('errWX:', err)
+                })
+            // axios.get('https://open.weixin.qq.com/connect/oauth2/authorize?appid='+appid+'&redirect_uri='+redirect_uri+'&response_type=code&scope=SCOPE&state=STATE#wechat_redirect')
+            // .then(function(res){
+            //     console.log(res)
+            // })
+        });
+        $('#post1').on('click', function () {
+            console.log(1)
+            axios.get(v + 'getGoodsList', {
+                    params: { //请求参数  
+                        id: 123,
+                        username: 666,
+                        token: 12
+                    }
+                })
+                .then(res => {
+                    console.log('res:', res)
+                })
+                .catch(err => {
+                    console.log('err:', err)
+                })
+        })
+        $('#post2').on('click', function () {
+            console.log(1)
+            axios.post(v + 'postForm', {
+                    id: 1,
+                    token: '123'
+                })
+                .then(res => {
+                    console.log('res:', res)
+                })
+                .catch(err => {
+                    console.log('err:', err)
+                })
+        });
+        $('#post3').on('click', function () {
+            console.log(1)
+            var file = document.createElement('input')
+            file.type = 'file';
+            file.click();
+            file.onchange = function (e) {
+                console.log(this.files[0])
+                var formData = new FormData();
+                formData.append('file', this.files[0]);
+                formData.append('filename', '123.png');
+                formData.append('path',
+                    'https://yiaiguanwang.oss-cn-beijing.aliyuncs.com/二维码@2x.png?v=0.1.3');
+                // https://yiaiguanwang.oss-cn-beijing.aliyuncs.com/二维码@2x.png?v=0.1.3
+                axios.post(v + 'upload', formData)
+                    .then(res => {
+                        console.log('res:', res)
+                        url = res.data.Link
+                        console.log('url:', url)
+                    })
+                    .catch(err => {
+                        console.log('err:', err)
+                    })
+            }
+
+        });
+        $('#post33').on('click', function () {
+            console.log(1)
+            var file = document.createElement('input')
+            file.type = 'file';
+            file.click();
+            file.onchange = function (e) {
+                console.log(this.files[0])
+                var formData = new FormData();
+                formData.append('file', this.files[0]);
+                formData.append('filename', '123.png');
+                formData.append('token', '666');
+                axios.post(v + 'upload/location', formData)
+                    .then(res => {
+                        console.log('res:', res)
+                        url = res.data.Link
+                        console.log('url:', url)
+                        $("#img-post33").attr('src',url)
+                    })
+                    .catch(err => {
+                        console.log('err:', err)
+                    })
+            }
+
+        });
+        $('#post4').on('click', function () {
+            axios({
+                    method: "post",
+                    url: v + "checkHeaders",
+                    headers: {
+                        message: "checkHeaders"
+                    },
+                    data: {
+                        username: 'liyue',
+                        password: '123321',
+                        token:123,
+                        pageNum:1,
+                        pageSize:10,
+                        level:12,
+                        id:494413
+                    }
+                })
+                .then(res => {
+                    console.log("res:", res);
+                })
+                .catch(err => {
+                    console.log("请求失败2222", err);
+                });
+        });
+        $('#post5').on('click', function () {
+            axios.get(v + "getImgUrl", {
+                    headers: {
+                        message: "checkHeaders"
+                    },
+                    responseType: 'stream',
+                    params: {
+                        token: 13,
+                        url: 'http://parentschool.oss-cn-beijing.aliyuncs.com/AA/b3105e8c5c34d634bcfbc9b25c49538b.png'
+                    }
+                }).then(function (response) {
+                    // download(2,response.data,'1.png')
+                })
+                .catch(err => {
+                    console.log("请求失败2222", err);
+                });
+            // axios({
+            //     method: "get",
+            //     url: v + "getImgUrl?token=123&url="+"http://parentschool.oss-cn-beijing.aliyuncs.com/AA/b3105e8c5c34d634bcfbc9b25c49538b.png",
+            //     headers: {
+            //         message: "checkHeaders"
+            //     },
+            //     responseType:'stream',
+            //     data: {}
+            // })
+            //     .then(res => {
+            //         console.log("res:", res);
+            //         // window.open(res.data)
+            //     })
+            //     .catch(err => {
+            //         console.log("请求失败2222", err);
+            //     });
+        });
+        $("#post7").on('click',function(){
+            axios.post(v+'addActivity',{
+                token:123,
+                name:'select * from testN',
+                type:1,
+                desc:'678',
+                link:"0909"
+            })
+            .then(function(res){
+                console.log(res)
+            })
+            .catch(function(e){
+                console.log(e)
+            })
+        });
+        $("#post8").on('click',function(){
+            axios.post(v+'updateActivity',{
+                token:123,
+                yx_name:'new update 002',
+                id:1,
+                yx_link:"你要干嘛"
+            })
+            .then(function(res){
+                console.log(res)
+            })
+            .catch(function(e){
+                console.log(e)
+            })
+        })
+        $("#post9").on('click',function(){
+            axios.post(v+'deleteActivity',{
+                token:123,
+                id:3
+            })
+            .then(function(res){
+                console.log(res)
+            })
+            .catch(function(e){
+                console.log(e)
+            })
+        })
+    </script>
+</body>
+
+</html>
