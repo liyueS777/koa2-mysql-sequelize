@@ -32,18 +32,18 @@ module.exports = async ctx => {
                 // 计算总数 当id=X 的总数
                 // let qAll = `SELECT count(*) as count FROM users WHERE id =${id}`
                 // 多字段查询后计算单总数
-                // let resDataNum = await sqlQuery('select count(*) as count from ?? where concat(yx_name,yx_desc) like ?',['testN','%'+ss+'%']);
-                let resDataNum = await sqlQuery('select count(*) as count from ??',['testN']);
+                // let resDataNum = await sqlQuery('select count(*) as count from ?? where concat(yx_name,yx_desc) like ?',['testc','%'+ss+'%']);
+                let resDataNum = await sqlQuery('select count(*) as count from ??',['testc']);
                 // 条件查询当level,id 的分页查询
                 // let res = await sqlQuery('select ?,? from users where level = ? and id = ? limit ?,?',["id",'nickname',level,id,(pageNum-1)*pageSize,pageSize]);
                 // 模糊查询 查询 yx_name  存在 Hong的分页查询
-                // let res = await sqlQuery("select id,yx_name,yx_link from testN where yx_name like ? limit ?,?",['%Hong%',(pageNum-1)*pageSize,pageSize]);
+                // let res = await sqlQuery("select id,yx_name,yx_link from testc where yx_name like ? limit ?,?",['%Hong%',(pageNum-1)*pageSize,pageSize]);
                 // 模糊查询 单表多字 SELECT * FROM `magazine` WHERE CONCAT(`title`,`tag`,`description`) LIKE ‘%关键字%
-                // let res = await sqlQuery("select id,yx_name,yx_desc from testN where concat(yx_name,yx_desc) like ? limit ?,?",['%'+ss+'%',(pageNum-1)*pageSize,pageSize]);
+                // let res = await sqlQuery("select id,yx_name,yx_desc from testc where concat(yx_name,yx_desc) like ? limit ?,?",['%'+ss+'%',(pageNum-1)*pageSize,pageSize]);
 
                 //查询返回 字段顺序  asc 升序（不写代表默认） ,desc 降序
                 // select * from database order by yx_type asc,yx_desc desc limit ?,?
-                let res = await sqlQuery("select id,yx_type,yx_desc from ?? order by yx_type desc limit ?,?",['testN',(pageNum-1)*pageSize,pageSize])
+                let res = await sqlQuery("select id,yx_type,yx_desc from ?? order by yx_type desc limit ?,?",['testc',(pageNum-1)*pageSize,pageSize])
 
 
                 // SELECT SQL_CALC_FOUND_ROWS * from t_plat_asset_client WHERE id>4 Limit 0,3;SELECT FOUND_ROWS();

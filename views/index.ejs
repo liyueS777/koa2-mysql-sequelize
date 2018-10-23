@@ -12,8 +12,8 @@
     <h1>
         <%= title %>
     </h1>
-    <div id="post0">微信授权=》信息/</div>
-    <div id="post1">点击get 请求 /</div>
+    <div id="post0">测试 sequelize 连接池</div>
+    <!-- <div id="post1">点击get 请求 /</div>
     <div id="post2">点击post 请求/apiKoa/postForm </div>
     <div id="post3">点击post 请求/apiKoa/upload  OSS</div>
     <div id="post33">点击post 请求/apiKoa/upload  本地上传</div>
@@ -21,21 +21,12 @@
     <div id="post5">路径换流</div>
     <div class="post6"><a download="test.png" href="/apiKoa/getImgUrl?url=http://parentschool.oss-cn-beijing.aliyuncs.com/AA/e5740e0112e369472fd69f8dfb2745bb.png">a标签下载流，需要download属性</a></div>
     <img src="" id="img-post33" alt="">
-    <!-- <form id="form" method="POST" action="/apiKoa/upload" enctype="multipart/form-data">
-        <p>file upload</p>
-        <span>picName:</span><input name="picName" type="text" /><br/>
-        <input name="file" type="file" /><br/><br/>
-        <button type="submit">submit</button>
-    </form> -->
-
-
-
     <hr>
     <hr>
     <div id="post4">条件查询+分页查询---点击post 请求/apiKoa/checkHeaders 检测headers </div>
     <div id="post7">新增数据---insert</div>
     <div id="post8">更新数据---update</div>
-    <div id="post9">删除数据---delete</div>
+    <div id="post9">删除数据---delete</div> -->
     <script>
         //设备检测  
         function detectmob() {
@@ -164,182 +155,185 @@
             //     console.log(res)
             // })
         });
-        $('#post1').on('click', function () {
-            console.log(1)
-            axios.get(v + 'getGoodsList', {
-                    params: { //请求参数  
-                        id: 123,
-                        username: 666,
-                        token: 12
-                    }
-                })
-                .then(res => {
-                    console.log('res:', res)
-                })
-                .catch(err => {
-                    console.log('err:', err)
-                })
-        })
-        $('#post2').on('click', function () {
-            console.log(1)
-            axios.post(v + 'postForm', {
-                    id: 1,
-                    token: '123'
-                })
-                .then(res => {
-                    console.log('res:', res)
-                })
-                .catch(err => {
-                    console.log('err:', err)
-                })
-        });
-        $('#post3').on('click', function () {
-            console.log(1)
-            var file = document.createElement('input')
-            file.type = 'file';
-            file.click();
-            file.onchange = function (e) {
-                console.log(this.files[0])
-                var formData = new FormData();
-                formData.append('file', this.files[0]);
-                formData.append('filename', '123.png');
-                formData.append('path',
-                    'https://yiaiguanwang.oss-cn-beijing.aliyuncs.com/二维码@2x.png?v=0.1.3');
-                // https://yiaiguanwang.oss-cn-beijing.aliyuncs.com/二维码@2x.png?v=0.1.3
-                axios.post(v + 'upload', formData)
-                    .then(res => {
-                        console.log('res:', res)
-                        url = res.data.Link
-                        console.log('url:', url)
-                    })
-                    .catch(err => {
-                        console.log('err:', err)
-                    })
-            }
 
-        });
-        $('#post33').on('click', function () {
-            console.log(1)
-            var file = document.createElement('input')
-            file.type = 'file';
-            file.click();
-            file.onchange = function (e) {
-                console.log(this.files[0])
-                var formData = new FormData();
-                formData.append('file', this.files[0]);
-                formData.append('filename', '123.png');
-                formData.append('token', '666');
-                axios.post(v + 'upload/location', formData)
-                    .then(res => {
-                        console.log('res:', res)
-                        url = res.data.Link
-                        console.log('url:', url)
-                        $("#img-post33").attr('src',url)
-                    })
-                    .catch(err => {
-                        console.log('err:', err)
-                    })
-            }
 
-        });
-        $('#post4').on('click', function () {
-            axios({
-                    method: "post",
-                    url: v + "checkHeaders",
-                    headers: {
-                        message: "checkHeaders"
-                    },
-                    data: {
-                        username: 'liyue',
-                        password: '123321',
-                        token:123,
-                        pageNum:1,
-                        pageSize:10,
-                        level:12,
-                        id:494413
-                    }
-                })
-                .then(res => {
-                    console.log("res:", res);
-                })
-                .catch(err => {
-                    console.log("请求失败2222", err);
-                });
-        });
-        $('#post5').on('click', function () {
-            axios.get(v + "getImgUrl", {
-                    headers: {
-                        message: "checkHeaders"
-                    },
-                    responseType: 'stream',
-                    params: {
-                        token: 13,
-                        url: 'http://parentschool.oss-cn-beijing.aliyuncs.com/AA/b3105e8c5c34d634bcfbc9b25c49538b.png'
-                    }
-                }).then(function (response) {
-                    // download(2,response.data,'1.png')
-                })
-                .catch(err => {
-                    console.log("请求失败2222", err);
-                });
-            // axios({
-            //     method: "get",
-            //     url: v + "getImgUrl?token=123&url="+"http://parentschool.oss-cn-beijing.aliyuncs.com/AA/b3105e8c5c34d634bcfbc9b25c49538b.png",
-            //     headers: {
-            //         message: "checkHeaders"
-            //     },
-            //     responseType:'stream',
-            //     data: {}
+        
+        // $('#post1').on('click', function () {
+        //     console.log(1)
+        //     axios.get(v + 'getGoodsList', {
+        //             params: { //请求参数  
+        //                 id: 123,
+        //                 username: 666,
+        //                 token: 12
+        //             }
+        //         })
+        //         .then(res => {
+        //             console.log('res:', res)
+        //         })
+        //         .catch(err => {
+        //             console.log('err:', err)
+        //         })
+        // })
+        // $('#post2').on('click', function () {
+        //     console.log(1)
+        //     axios.post(v + 'postForm', {
+        //             id: 1,
+        //             token: '123'
+        //         })
+        //         .then(res => {
+        //             console.log('res:', res)
+        //         })
+        //         .catch(err => {
+        //             console.log('err:', err)
+        //         })
+        // });
+        // $('#post3').on('click', function () {
+        //     console.log(1)
+        //     var file = document.createElement('input')
+        //     file.type = 'file';
+        //     file.click();
+        //     file.onchange = function (e) {
+        //         console.log(this.files[0])
+        //         var formData = new FormData();
+        //         formData.append('file', this.files[0]);
+        //         formData.append('filename', '123.png');
+        //         formData.append('path',
+        //             'https://yiaiguanwang.oss-cn-beijing.aliyuncs.com/二维码@2x.png?v=0.1.3');
+        //         // https://yiaiguanwang.oss-cn-beijing.aliyuncs.com/二维码@2x.png?v=0.1.3
+        //         axios.post(v + 'upload', formData)
+        //             .then(res => {
+        //                 console.log('res:', res)
+        //                 url = res.data.Link
+        //                 console.log('url:', url)
+        //             })
+        //             .catch(err => {
+        //                 console.log('err:', err)
+        //             })
+        //     }
+
+        // });
+        // $('#post33').on('click', function () {
+        //     console.log(1)
+        //     var file = document.createElement('input')
+        //     file.type = 'file';
+        //     file.click();
+        //     file.onchange = function (e) {
+        //         console.log(this.files[0])
+        //         var formData = new FormData();
+        //         formData.append('file', this.files[0]);
+        //         formData.append('filename', '123.png');
+        //         formData.append('token', '666');
+        //         axios.post(v + 'upload/location', formData)
+        //             .then(res => {
+        //                 console.log('res:', res)
+        //                 url = res.data.Link
+        //                 console.log('url:', url)
+        //                 $("#img-post33").attr('src',url)
+        //             })
+        //             .catch(err => {
+        //                 console.log('err:', err)
+        //             })
+        //     }
+
+        // });
+        // $('#post4').on('click', function () {
+        //     axios({
+        //             method: "post",
+        //             url: v + "checkHeaders",
+        //             headers: {
+        //                 message: "checkHeaders"
+        //             },
+        //             data: {
+        //                 username: 'liyue',
+        //                 password: '123321',
+        //                 token:123,
+        //                 pageNum:1,
+        //                 pageSize:10,
+        //                 level:12,
+        //                 id:494413
+        //             }
+        //         })
+        //         .then(res => {
+        //             console.log("res:", res);
+        //         })
+        //         .catch(err => {
+        //             console.log("请求失败2222", err);
+        //         });
+        // });
+        // $('#post5').on('click', function () {
+        //     axios.get(v + "getImgUrl", {
+        //             headers: {
+        //                 message: "checkHeaders"
+        //             },
+        //             responseType: 'stream',
+        //             params: {
+        //                 token: 13,
+        //                 url: 'http://parentschool.oss-cn-beijing.aliyuncs.com/AA/b3105e8c5c34d634bcfbc9b25c49538b.png'
+        //             }
+        //         }).then(function (response) {
+        //             // download(2,response.data,'1.png')
+        //         })
+        //         .catch(err => {
+        //             console.log("请求失败2222", err);
+        //         });
+        //     // axios({
+        //     //     method: "get",
+        //     //     url: v + "getImgUrl?token=123&url="+"http://parentschool.oss-cn-beijing.aliyuncs.com/AA/b3105e8c5c34d634bcfbc9b25c49538b.png",
+        //     //     headers: {
+        //     //         message: "checkHeaders"
+        //     //     },
+        //     //     responseType:'stream',
+        //     //     data: {}
+        //     // })
+        //     //     .then(res => {
+        //     //         console.log("res:", res);
+        //     //         // window.open(res.data)
+        //     //     })
+        //     //     .catch(err => {
+        //     //         console.log("请求失败2222", err);
+        //     //     });
+        // });
+        // $("#post7").on('click',function(){
+        //     axios.post(v+'addActivity',{
+        //         token:123,
+        //         name:'select * from testc',
+        //         type:1,
+        //         desc:'678',
+        //         link:"0909"
+        //     })
+        //     .then(function(res){
+        //         console.log(res)
+        //     })
+        //     .catch(function(e){
+        //         console.log(e)
+        //     })
+        // });
+        // $("#post8").on('click',function(){
+        //     axios.post(v+'updateActivity',{
+        //         token:123,
+        //         yx_name:'new update 002',
+        //         id:1,
+        //         yx_link:"你要干嘛"
+        //     })
+        //     .then(function(res){
+        //         console.log(res)
+        //     })
+        //     .catch(function(e){
+        //         console.log(e)
+        //     })
+        // })
+        // $("#post9").on('click',function(){
+            // axios.post(v+'deleteActivity',{
+            //     token:123,
+            //     id:3
             // })
-            //     .then(res => {
-            //         console.log("res:", res);
-            //         // window.open(res.data)
-            //     })
-            //     .catch(err => {
-            //         console.log("请求失败2222", err);
-            //     });
-        });
-        $("#post7").on('click',function(){
-            axios.post(v+'addActivity',{
-                token:123,
-                name:'select * from testN',
-                type:1,
-                desc:'678',
-                link:"0909"
-            })
-            .then(function(res){
-                console.log(res)
-            })
-            .catch(function(e){
-                console.log(e)
-            })
-        });
-        $("#post8").on('click',function(){
-            axios.post(v+'updateActivity',{
-                token:123,
-                yx_name:'new update 002',
-                id:1,
-                yx_link:"你要干嘛"
-            })
-            .then(function(res){
-                console.log(res)
-            })
-            .catch(function(e){
-                console.log(e)
-            })
-        })
-        $("#post9").on('click',function(){
-            axios.post(v+'deleteActivity',{
-                token:123,
-                id:3
-            })
-            .then(function(res){
-                console.log(res)
-            })
-            .catch(function(e){
-                console.log(e)
-            })
-        })
+            // .then(function(res){
+            //     console.log(res)
+            // })
+            // .catch(function(e){
+            //     console.log(e)
+            // })
+        // })
     </script>
 </body>
 

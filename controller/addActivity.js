@@ -21,12 +21,12 @@ module.exports = async ctx => {
             } = ctx.request.body;
             try {
                 // 这么写有风险，可能sql注入了
-                // let q = `insert into testN (yx_name,yx_link,yx_type,yx_desc) VALUES ("${name}","${link}",${type},"${desc}")`;
+                // let q = `insert into testc (yx_name,yx_link,yx_type,yx_desc) VALUES ("${name}","${link}",${type},"${desc}")`;
 
-                //单条  'insert into testN (yx_name,yx_link,yx_type,yx_desc) values (?,?,?,?)',[name,link,type,desc]
+                //单条  'insert into testc (yx_name,yx_link,yx_type,yx_desc) values (?,?,?,?)',[name,link,type,desc]
 
-                //多条  'insert into testN (yx_name,yx_link,yx_type,yx_desc) values (?,?,?,?),(?,?,?,?)',[name,link,type,desc,name,link,type,desc]
-                // var ssql="insert into testN (yx_name,yx_link,yx_type,yx_desc) values ",vvalue=[];
+                //多条  'insert into testc (yx_name,yx_link,yx_type,yx_desc) values (?,?,?,?),(?,?,?,?)',[name,link,type,desc,name,link,type,desc]
+                // var ssql="insert into testc (yx_name,yx_link,yx_type,yx_desc) values ",vvalue=[];
                 // var arr = [
                 //     {
                 //         yx_name:'aa',
@@ -45,16 +45,16 @@ module.exports = async ctx => {
                 // if(arr.length){
                 //     ssql = ssql.slice(0,-1);
                 // }
-                let res = await sqlQuery('insert into testN (yx_name,yx_link,yx_type,yx_desc) values (?,?,?,?)',[name,link,type,desc]);//单条
+                let res = await sqlQuery('insert into testc (yx_name,yx_link,yx_type,yx_desc) values (?,?,?,?)',[name,link,type,desc]);//单条
                 // let res = await sqlQuery(ssql,vvalue);//多条
                 // let res1 = await sqlQuery('SELECT LAST_INSERT_ID()')
-                let resList = await sqlQuery('select * from testN')
+                let resList = await sqlQuery('select * from testc')
                 ctx.body = {
                     code: 1,
                     msg: "message匹配正确",
                     result: {
                         message:"新增数据成功",
-                        testN_list:resList,
+                        testc_list:resList,
                         res
                     }
                 }

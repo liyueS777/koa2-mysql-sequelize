@@ -10,13 +10,13 @@ module.exports = async ctx => {
             yx_link
         } = ctx.request.body;
         try {
-            let res = await sqlQuery('update ?? set yx_name = ?,yx_link=? where id = ?',['testN',yx_name,yx_link,id])
+            let res = await sqlQuery('update ?? set yx_name = ?,yx_link=? where id = ?',['testc',yx_name,yx_link,id])
             ctx.body = {
                 code: 1,
                 msg: "message匹配正确",
                 result: {
                     message:"更新数据成功",
-                    testN_list:res
+                    testc_list:res
                 }
             }
         } catch (e) {

@@ -34,7 +34,7 @@ const accessUrl = {
 }
 //路由拦截
 app.use(async (ctx, next) => {
-    console.log('每一次', ctx.method, ctx.request.body.token, ctx.request.query.token)
+    console.log('路由信息：', '路径：',ctx.path,'方法：',ctx.method,ctx.method=='get'?ctx.request.query:ctx.request.body)
 
     // ctx.url 是带参数的，像get请求 ，但ctx.path 是不带参数的
     // ctx.request.path 是真正的不带参数的url,get请求要注意哦用这个

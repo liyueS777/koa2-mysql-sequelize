@@ -9,7 +9,7 @@ module.exports = async ctx => {
     }else {
         try{
             const { id } = ctx.request.body
-            let res = await sqlQuery('delete from ?? where id = ?',['testN',id]);
+            let res = await sqlQuery('delete from ?? where id = ?',['testc',id]);
             ctx.body = {
                 code:1,
                 msg:"删除数据成功",
