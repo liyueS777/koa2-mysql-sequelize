@@ -2,6 +2,8 @@ var fs = require('fs')
 var path = require('path')
 var request = require('request');
 var appId = "wx3465005cc54652b4";
+
+const sequelize = require('../models/sequelize').sequelize
 const testa = require('../models/testa')
 const testb = require('../models/testb')
 const testc = require('../models/testc')
@@ -208,42 +210,61 @@ module.exports = async ctx => {
             // Tag.belongsToMany(Note, {
             //     'through': Tagging
             // });
-            testb.belongsToMany(testc, {
-                through: taggingtest,
-                foreignKey: "public_id",
-                targetKey: 'yx_type'
-            })
-            testc.belongsToMany(testb, {
-                through: taggingtest,
-                foreignKey: "yx_type",
-                targetKey: "public_id"
-            });
-            // var user = await testb.getTestcs({
-            //     where:{
-            //         yx_type:3
-            //     }
+            // testb.belongsToMany(testc, {
+            //     through: taggingtest,
+            //     foreignKey: "public_id",
+            //     targetKey: 'yx_type'
+            // })
+            // testc.belongsToMany(testb, {
+            //     through: taggingtest,
+            //     foreignKey: "yx_type",
+            //     targetKey: "public_id"
+            // });
+
+
+            // var user = await testb.findAndCountAll({
+            //     where: {
+            //         // $or: [{
+            //         //         public_id: 1
+            //         //     },
+            //         //     {
+            //         //         public_id: 2
+            //         //     }
+            //         // ],
+            //         public_id: 1
+            //     },
+            //     include: [{
+            //         model: testc
+            //     }],
+            //     distinct: true,
+            //     limit: 10,
+            //     offset: 0
             // })
 
-            var user = await testb.findAndCountAll({
-                where: {
-                    // $or: [{
-                    //         public_id: 1
-                    //     },
-                    //     {
-                    //         public_id: 2
-                    //     }
-                    // ],
-                    public_id: 1
-                },
-                include: [{
-                    model: testc
-                }],
-                distinct: true,
-                limit: 10,
-                offset: 0
+            /**
+             * 事物的回滚： 表1先增加，然后在增加表3，可在增加表三时 异常没加上，那么表1加的东西不作数的，所以要回滚
+             * 这里的sequelize 为实例
+             */
+
+            let user = await sequelize.transaction(async (t) => {
+                var r1 = await testb.create({
+                    public_name: 'IT部2'
+                }, {
+                    transaction: t
+                });
+                var r2 =  await testc.create({
+                    yx_name:'transaction',
+                    yx_type:3
+                }, {
+                    transaction: t
+                });
+                return {
+                    group:r1,
+                    yx:r2
+                }
+
+
             })
-
-
             ctx.body = {
                 u: '123',
                 user: user // 如果返回就是该条增加后的内容,需要获取“干净”的JSON对象可以调用get({'plain': true})

@@ -51,12 +51,12 @@ const testc = sequelize.define('testc',
         // },
         yx_desc:{
             type:Sequelize.STRING,
-            allowNull:false,
+            allowNull:true,
             unique:false
         },
         yx_link:{
             type:Sequelize.STRING,
-            allowNull:false,
+            allowNull:true,
             unique:false
         },
         yx_name:{
