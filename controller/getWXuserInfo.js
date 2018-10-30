@@ -167,35 +167,37 @@ module.exports = async ctx => {
             //指定User和User_relation的关系为1：1的关系，设定目标为frendid，即查询中 userid = frendid
             //User.belongsTo(User_relation,{foreignKey:'userid',targetKey: 'frendid'});
 
-            // testb.hasMany(testa,{foreignKey:'is_public',targetKey: 'public_id'});
-            // testb.hasMany(testc,{foreignKey:"yx_type",targetKey:'public_id'})
-            // var user = await testb.findAndCountAll({
-            //     attributes:["public_id"],
-            //     where:{
-            //         $or:[
-            //             {
-            //                 public_id:1
-            //             },
-            //             {
-            //                 public_id:3
-            //             },
-            //             {
-            //                 public_name:'法务部'
-            //             }
-            //         ]
-            //     },
-            //     include:[
-            //         {
-            //             model:testa,
-            //             attributes:["yx_name",'is_public'],//这里是关联表的 只选择的字段
-            //         },
-            //         {
-            //             model:testc,
-            //             attributes:{exclude:["yx_link"]}
-            //         }
-            //     ],
-            //     distinct: true//在联表查询中如果不写那么定义的有关联表的统计数量
-            // })
+            testb.hasMany(testa,{foreignKey:'is_public',targetKey: 'public_id'});
+            testb.hasMany(testc,{foreignKey:"yx_type",targetKey:'public_id'})
+            var user = await testb.findAndCountAll({
+                attributes:["public_id"],
+                where:{
+                    $or:[
+                        {
+                            public_id:1
+                        },
+                        {
+                            public_id:3
+                        },
+                        {
+                            public_name:'法务部'
+                        }
+                    ]
+                },
+                include:[
+                    {
+                        model:testa,
+                        attributes:["yx_name",'is_public'],//这里是关联表的 只选择的字段
+                        as:"testas"
+                    },
+                    {
+                        model:testc,
+                        attributes:{exclude:["yx_link"]},
+                        as:'testcs'
+                    }
+                ],
+                distinct: true//在联表查询中如果不写那么定义的有关联表的统计数量
+            })
 
             /**
              * 多对多  belongsToMany 
@@ -246,28 +248,55 @@ module.exports = async ctx => {
              * 这里的sequelize 为实例
              */
 
-            let user = await sequelize.transaction(async (t) => {
-                var r1 = await testb.create({
-                    public_name: 'IT部2'
-                }, {
-                    transaction: t
-                });
-                var r2 =  await testc.create({
-                    yx_name:'transaction',
-                    yx_type:3
-                }, {
-                    transaction: t
-                });
-                return {
-                    group:r1,
-                    yx:r2
-                }
+            // let user = await sequelize.transaction(async (t) => {
+            //     var r1 = await testb.create({
+            //         public_name: 'IT部2'
+            //     }, {
+            //         transaction: t
+            //     });
+            //     var r2 =  await testc.create({
+            //         yx_name:'transaction',
+            //         yx_type:3
+            //     }, {
+            //         transaction: t
+            //     });
+            //     return {
+            //         group:r1,
+            //         yx:r2
+            //     }
 
 
-            })
+            // })
+
+            //设置cookie
+            /**
+             * ctx.cookies.set(
+                    'cid','hello world',{
+                        domain:'localhost', // 写cookie所在的域名
+                        path:'/',       // 写cookie所在的路径
+                        maxAge: 2*60*60*1000,   // cookie有效时长
+                        expires:new Date('2018-02-08'), // cookie失效时间
+                        httpOnly:false,  // 是否只用于http请求中获取
+                        overwrite:false  // 是否允许重写
+                    }
+                );
+             */
+            // ctx.cookies.get(name, [options]) 读取上下文请求中的cookie
+            // ctx.cookies.set(name, value, [options]) 在上下文中写入cookie
+            // ctx.cookies.set('cid', 10086, {
+            //     path:'/',
+            //     maxAge:10*60*1000,
+            //     httpOnly:false
+            // });
+            // const userInfo = ctx.request.body.userInfo || {
+            //     name:'xiao-default',
+            //     age:18
+            // };
+            // ctx.session.userInfo = userInfo;
             ctx.body = {
                 u: '123',
-                user: user // 如果返回就是该条增加后的内容,需要获取“干净”的JSON对象可以调用get({'plain': true})
+                user: user, // 如果返回就是该条增加后的内容,需要获取“干净”的JSON对象可以调用get({'plain': true})
+                cookie:ctx.cookies.get('cid')
             }
         } catch (e) {
             console.log('error异常了：', e)

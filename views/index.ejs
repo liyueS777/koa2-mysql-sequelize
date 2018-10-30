@@ -13,9 +13,10 @@
         <%= title %>
     </h1>
     <div id="post0">测试 sequelize 连接池</div>
-    <!-- <div id="post1">点击get 请求 /</div>
-    <div id="post2">点击post 请求/apiKoa/postForm </div>
-    <div id="post3">点击post 请求/apiKoa/upload  OSS</div>
+    <div id="postCookie">cookies</div>
+    <!-- <div id="post1">点击get 请求 /</div> -->
+    <div id="post2">登陆login</div>
+    <!-- <div id="post3">点击post 请求/apiKoa/upload  OSS</div>
     <div id="post33">点击post 请求/apiKoa/upload  本地上传</div>
     
     <div id="post5">路径换流</div>
@@ -132,12 +133,19 @@
         var url = '';
         var appid = "wx3465005cc54652b4";
         var redirect_uri = window.location.href;
+        $("#postCookie").on('click',function(){
+            console.log(document.cookie)
+        });
         $('#post0').on('click', function () {
             console.log(0)
             axios.post(v + 'getWXuserInfo', {
                     //请求参数  
                     token: 12,
-                    url: encodeURIComponent(window.location.href)
+                    url: encodeURIComponent(window.location.href),
+                    userInfo:{
+                        name:"我是ejs",
+                        age:19
+                    }
 
                 },
                 {
@@ -174,19 +182,23 @@
         //             console.log('err:', err)
         //         })
         // })
-        // $('#post2').on('click', function () {
-        //     console.log(1)
-        //     axios.post(v + 'postForm', {
-        //             id: 1,
-        //             token: '123'
-        //         })
-        //         .then(res => {
-        //             console.log('res:', res)
-        //         })
-        //         .catch(err => {
-        //             console.log('err:', err)
-        //         })
-        // });
+        $('#post2').on('click', function () {
+            console.log(1)
+            axios.post(v + 'postForm', {
+                    id: 1,
+                    token: '123',
+                    userInfo:{
+                        name:'登陆ejs',
+                        age:18.8
+                    }
+                })
+                .then(res => {
+                    console.log('res:', res)
+                })
+                .catch(err => {
+                    console.log('err:', err)
+                })
+        });
         // $('#post3').on('click', function () {
         //     console.log(1)
         //     var file = document.createElement('input')

@@ -7,7 +7,7 @@ const sequelize = new Sequelize(
     {
         'dialect': 'mysql',  // 数据库使用mysql
         'host': configs.database.host, // 数据库服务器ip
-        'port': 3306,        // 数据库服务器端口
+        'port': configs.database.port,        // 数据库服务器端口
         'define': {
             // 字段以下划线（_）来分割（默认是驼峰命名风格）
             'underscored': true

@@ -2,7 +2,7 @@ const router = require('koa-router')()
 
 // const home = require('./childrenRoutes/home')
 // const upload = require('./childrenRoutes/upload')
-// const postForm = require('./childrenRoutes/postForm')
+const postForm = require('./childrenRoutes/postForm')
 // const checkHeaders = require('./childrenRoutes/checkHeaders')
 // const getImgUrl = require('./childrenRoutes/getImgUrl')
 const getWXuserInfo = require('./childrenRoutes/getWXuserInfo')
@@ -15,7 +15,7 @@ const getWXuserInfo = require('./childrenRoutes/getWXuserInfo')
 // 这里的路由是 基于/apiKoa 下面的，要拼接
 // router.use('/apiKoa',home.routes(),home.allowedMethods())
 // router.use('/apiKoa',upload.routes(),upload.allowedMethods())
-// router.use('/apiKoa',postForm.routes(),postForm.allowedMethods())
+router.use('/apiKoa',postForm.routes(),postForm.allowedMethods())
 // router.use('/apiKoa',checkHeaders.routes(),checkHeaders.allowedMethods())
 // router.use('/apiKoa',getImgUrl.routes(),getImgUrl.allowedMethods())
 router.use('/apiKoa',getWXuserInfo.routes(),getWXuserInfo.allowedMethods())//测试sequelize连接池的接口
