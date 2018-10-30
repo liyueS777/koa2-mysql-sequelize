@@ -3,8 +3,11 @@ const app = new Koa2()
 const bodyParser = require('koa-bodyparser')
 const path = require('path')
 const koaStatic = require('koa-static')
-
 const session = require("koa-session")
+
+
+// 初始化redis
+const redisServer = require('./redisInit/redisInit')
 const sessionConfig = {
     key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
     /** (number || 'session') maxAge in ms (default is 1 days) */
@@ -45,7 +48,7 @@ const accessUrl = {
     '/apiKoa/upload/location': true,
 }
 //路由拦截
-app.use(async (ctx, next) => {
+app.use( async (ctx, next) => {
     console.log('session:',ctx.session);
     console.log('cookie:',ctx.cookies.get('cid'));
     console.log('路由信息：', '路径：',ctx.path,'方法：',ctx.method,ctx.method=='get'?ctx.request.query:ctx.request.body)
@@ -55,11 +58,21 @@ app.use(async (ctx, next) => {
     if (accessUrl[ctx.request.path]) {
         console.log('next')
         await next()
-    } else if ((ctx.request.body.token && ctx.method == 'POST') || (ctx.request.query.token && ctx.method == "GET")) {
-        console.log('next')
-        await next()
+    } 
+    else if ((ctx.request.body.token && ctx.method == 'POST') || (ctx.request.query.token && ctx.method == "GET")) {
+        try{
+            var val = await redisServer.getState({key:"liyue1"});
+            console.log('验证成功',val);
+            await next()
+        }catch(e){
+            ctx.body = {
+                code:-1,
+                msg:"token已失效或者数据异常"
+            }
+        }
+        
     } else {
-        ctx.body = await {
+        ctx.body =  {
             msg: "没有登录token"
         }
     }

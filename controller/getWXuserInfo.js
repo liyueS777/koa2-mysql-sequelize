@@ -2,7 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var request = require('request');
 var appId = "wx3465005cc54652b4";
-
+const redisServer = require('../redisInit/redisInit')
 const sequelize = require('../models/sequelize').sequelize
 const testa = require('../models/testa')
 const testb = require('../models/testb')
@@ -167,6 +167,24 @@ module.exports = async ctx => {
             //指定User和User_relation的关系为1：1的关系，设定目标为frendid，即查询中 userid = frendid
             //User.belongsTo(User_relation,{foreignKey:'userid',targetKey: 'frendid'});
 
+            redisServer.setState({
+                key:'liyue2',
+                value:{
+                    a:1,
+                    b:2,
+                    c:3
+                },
+                expire:60*2,
+                success:function(){
+                    console.log('ok')
+                }
+            });
+            // redisServer.del('liyue3',function(err,data){
+            //     console.log('del:',err,data)
+            // })
+            var vv = await redisServer.delState({key:'liyue3'})
+            console.log('vv:',vv);
+
             testb.hasMany(testa,{foreignKey:'is_public',targetKey: 'public_id'});
             testb.hasMany(testc,{foreignKey:"yx_type",targetKey:'public_id'})
             var user = await testb.findAndCountAll({
@@ -188,12 +206,10 @@ module.exports = async ctx => {
                     {
                         model:testa,
                         attributes:["yx_name",'is_public'],//这里是关联表的 只选择的字段
-                        as:"testas"
                     },
                     {
                         model:testc,
                         attributes:{exclude:["yx_link"]},
-                        as:'testcs'
                     }
                 ],
                 distinct: true//在联表查询中如果不写那么定义的有关联表的统计数量
