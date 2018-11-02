@@ -174,17 +174,29 @@ module.exports = async ctx => {
                     b:2,
                     c:3
                 },
-                expire:60*2,
+                // expire:60*2,
                 success:function(){
                     console.log('ok')
                 }
             });
+            console.log(1)
+            var aa = redisServer.set('liyue4','666','EX',60*4)
+            console.log('aa:',aa)
+            console.log(2);
+            var cc= await redisServer.getAsync('liyue4');//异步方式~
+            console.log('ggggg:,',cc)
+            console.log(3)
             // redisServer.del('liyue3',function(err,data){
             //     console.log('del:',err,data)
             // })
-            var vv = await redisServer.delState({key:'liyue3'})
-            console.log('vv:',vv);
-
+            // var vv = await redisServer.delState({key:'liyue3'})
+            // console.log('vv:',vv);
+            // if(vv){
+            //     console.log('删除成功')
+            // }else {
+            //     console.log('不存在该Token或者已经失效')
+            // }
+            
             testb.hasMany(testa,{foreignKey:'is_public',targetKey: 'public_id'});
             testb.hasMany(testc,{foreignKey:"yx_type",targetKey:'public_id'})
             var user = await testb.findAndCountAll({

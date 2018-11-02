@@ -60,16 +60,25 @@ app.use( async (ctx, next) => {
         await next()
     } 
     else if ((ctx.request.body.token && ctx.method == 'POST') || (ctx.request.query.token && ctx.method == "GET")) {
-        try{
-            var val = await redisServer.getState({key:"liyue1"});
-            console.log('验证成功',val);
-            await next()
-        }catch(e){
-            ctx.body = {
-                code:-1,
-                msg:"token已失效或者数据异常"
-            }
-        }
+        // try{
+        //     var val = await redisServer.getState({key:"liyue1"});
+        //     console.log('验证成功',val);
+        //     if(val){
+        //         await next()
+        //     }else {
+        //         ctx.body =  {
+        //             code:-1,
+        //             msg:"Token已失效或者不存在"
+        //         }
+        //     }
+            
+        // }catch(e){
+        //     ctx.body =  {
+        //         code:-1,
+        //         msg:"数据异常"
+        //     }
+        // }
+        await next()
         
     } else {
         ctx.body =  {

@@ -6,6 +6,7 @@ blueBird.promisifyAll(redis.RedisClient.prototype);
 blueBird.promisifyAll(redis.Multi.prototype)
 
 var e = 'local';
+// var e = 'production';
 if(e in redisConfig){
     console.log('环境变量ok')
     var redisServer = redis.createClient(redisConfig[e])
@@ -61,12 +62,15 @@ function _getState(re){
     re.getState = function(options){
         return new Promise((resolve,reject) =>{
             re.getAsync(options.key).then((val)=>{
+                //这里能正常返回就不叫做异常，只是有或者没有
                 console.log(val,'获取的val')
                 if(val != "" && val != null){
-                    resolve(JSON.parse(val))
+                    resolve(typeof val == 'string'?val:JSON.parse(val))
                 }else{
-                    reject()
+                    resolve(0)
                 }
+            }).catch(err=>{//这里不能说 为空的时候也是异常，这样会抛出错误的，应该是为空
+                reject()
             })
         })
         
@@ -82,8 +86,10 @@ function _delState(re){
                     resolve(val)
                 }else {
                     //0, null
-                    reject()
+                    resolve(0)
                 }
+            }).catch(err=>{
+                reject()
             })
         })
     }

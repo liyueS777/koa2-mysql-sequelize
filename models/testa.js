@@ -64,7 +64,7 @@ const testa = sequelize.define('testa',
     {
         // 自定义表名
         'freezeTableName': true,//值为ture时不修改
-        //'tableName': 'xyz_users',
+        // 'tableName': 'xyz_users',
 
         // 是否需要增加createdAt、updatedAt、deletedAt字段
         'timestamps': true,

@@ -8,6 +8,13 @@ const redisConfig = {
         "logErrors" : true
     },
     development:{},
-    production:{},
+    production:{
+        "host" : "47.105.77.128",
+        "port" : "6379",
+        "db" : 0,
+        "password":"ly18820146660",
+        "ttl" : 3600*24*30,
+        "logErrors" : true
+    },
 }
 module.exports = redisConfig
